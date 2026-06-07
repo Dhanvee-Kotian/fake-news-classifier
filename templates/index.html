@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TrueLens AI | Multi-Model Detection</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        body {
+            background: linear-gradient(-45deg, #0f1b36, #251432, #312e81, #1a2e5e);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+
+<body class="text-white min-h-screen font-sans">
+
+<nav class="glass sticky top-0 z-50 border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+       
+        
+        <div class="space-x-6 text-sm font-medium">
+            <a href="/" class="hover:text-blue-400 transition">Analysis</a>
+            <a href="/admin" class="hover:text-blue-400 transition">Admin Panel</a>
+        </div>
+    </div>
+</nav>
+
+<div class="max-w-5xl mx-auto px-6 py-7">
+
+    <div class="text-center mb-12">
+        <h1 class="text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
+            Fake News Detector
+        </h1>
+        <p class="text-gray-400 text-lg">
+            Powered by an ensemble of 5 Machine Learning models
+        </p>
+
+    <section id="features" class="max-w-6xl mx-auto px-6 py-3">
+        
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="glass p-8 rounded-2xl">
+                <h3 class="text-2xl font-bold mb-2">Multi-Model</h3>
+                <p class="text-gray-300">
+                    Logistic Regression, Random Forest, SVM, Decision Tree and Naive Bayes.
+                </p>
+            </div>
+    
+            <div class="glass p-8 rounded-2xl">
+                <h3 class="text-2xl font-bold mb-2">Fast Analysis</h3>
+                <p class="text-gray-300">
+                    TF-IDF based text vectorization for rapid predictions.
+                </p>
+            </div>
+    
+            <div class="glass p-8 rounded-2xl">
+                <h3 class="text-2xl font-bold mb-2">Transparent</h3>
+                <p class="text-gray-300">
+                    Confidence scores and probability breakdowns for every model.
+                </p>
+            </div>
+        </div>
+    </section>
+    </div>
+    
+
+    <div class="glass p-8 rounded-2xl shadow-2xl mb-12 ">
+        <form method="POST" action="/" class="space-y-6">
+            <label class="block text-sm font-medium text-gray-300 mb-2">
+                Paste Article Headline or Content
+            </label>
+            <textarea
+                name="news"
+                rows="5"
+                required
+                placeholder="e.g. 'Breaking: Scientists discover water on Mars...'"
+                class="w-full p-4 rounded-xl bg-black/40 border border-white/10 text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+            >{{ user_input }}</textarea>
+
+            <button
+                type="submit"
+                class="w-full py-4 bg-blue-600 hover:bg-blue-500 rounded-xl font-bold text-lg shadow-lg shadow-blue-900/50 transition transform hover:scale-[1.02]">
+                Analyze Credibility
+            </button>
+        </form>
+    </div>
+
+    {% if best_result %}
+    <div class="animate-fade-in-up">
+        
+        <div class="glass p-8 rounded-3xl text-center border-2 mb-8 relative overflow-hidden
+            {% if best_result.prediction == 'TRUE NEWS' %}border-green-500/50 bg-green-900/10{% else %}border-red-500/50 bg-red-900/10{% endif %}">
+            
+            <div class="absolute top-4 right-4">
+                <span class="px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full bg-white/10 text-white border border-white/20">
+                    Best Model: {{ best_result.display_name }}
+                </span>
+            </div>
+
+            <div class="text-6xl mb-4">
+                {% if best_result.prediction == 'TRUE NEWS' %}✅{% else %}🚨{% endif %}
+            </div>
+
+            <h2 class="text-4xl font-extrabold mb-2 
+                {% if best_result.prediction == 'TRUE NEWS' %}text-green-400{% else %}text-red-400{% endif %}">
+                {{ best_result.prediction }}
+            </h2>
+
+            <p class="text-xl text-gray-300 mb-6">
+                Confidence Score: <span class="font-bold text-white">{{ best_result.confidence }}%</span>
+            </p>
+
+            {% if keywords %}
+            <div class="flex flex-wrap justify-center gap-2 mt-4">
+                {% for word in keywords %}
+                <span class="px-3 py-1 bg-white/5 rounded-lg text-sm text-blue-200 border border-white/10">
+                    #{{ word }}
+                </span>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="glass rounded-2xl overflow-hidden">
+            <details class="group">
+                <summary class="flex justify-between items-center p-6 cursor-pointer hover:bg-white/5 transition">
+                    <h3 class="text-xl font-bold flex items-center">
+                        <span class="mr-2">📊</span> Compare All 5 Models
+                    </h3>
+                    <span class="text-blue-400 text-sm group-open:rotate-180 transition-transform">▼</span>
+                </summary>
+                
+                <div class="p-6 pt-0 border-t border-white/10">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="text-gray-400 text-sm border-b border-white/10">
+                                <th class="py-3">Model</th>
+                                <th class="py-3">Prediction</th>
+                                <th class="py-3">Confidence</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-white/5">
+                            <tr class="bg-white/5">
+                                <td class="py-3 font-medium text-blue-300">{{ best_result.display_name }} 🏆</td>
+                                <td class="py-3">
+                                    <span class="px-2 py-1 rounded text-xs font-bold 
+                                        {% if best_result.prediction == 'TRUE NEWS' %}bg-green-500/20 text-green-300{% else %}bg-red-500/20 text-red-300{% endif %}">
+                                        {{ best_result.prediction }}
+                                    </span>
+                                </td>
+                                <td class="py-3 font-mono">{{ best_result.confidence }}%</td>
+                            </tr>
+
+                            {% for res in other_results %}
+                            <tr class="hover:bg-white/5 transition">
+                                <td class="py-3 text-gray-300">{{ res.display_name }}</td>
+                                <td class="py-3">
+                                    <span class="px-2 py-1 rounded text-xs font-bold 
+                                        {% if res.prediction == 'TRUE NEWS' %}bg-green-500/20 text-green-300{% else %}bg-red-500/20 text-red-300{% endif %}">
+                                        {{ res.prediction }}
+                                    </span>
+                                </td>
+                                <td class="py-3 font-mono text-gray-400">{{ res.confidence }}%</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </details>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+<footer class="text-center text-gray-500 text-sm py-8">
+    © 2026 TrueLens AI Project
+</footer>
+
+</body>
+</html>

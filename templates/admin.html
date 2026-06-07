@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard | TrueLens AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        body { background-color: #0f172a; color: white; }
+    </style>
+</head>
+
+<body class="min-h-screen">
+
+<nav class="glass border-b border-white/10">
+    <div class="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
+        <h1 class="text-2xl font-bold text-blue-400">🔍 TrueLens AI</h1>
+        <a href="/" class="px-4 py-2 bg-white/10 rounded-lg hover:bg-white/20 transition text-sm">
+            ← Back to App
+        </a>
+    </div>
+</nav>
+
+<div class="max-w-3xl mx-auto px-3 py-12">
+    
+    <div class="grid grid-cols-3 gap-4 mb-10">
+        <div class="glass p-6 rounded-xl text-center">
+            <p class="text-gray-400 text-xs uppercase">System Status</p>
+            <p class="text-green-400 font-bold text-lg">● Online</p>
+        </div>
+        <div class="glass p-6 rounded-xl text-center">
+            <p class="text-gray-400 text-xs uppercase">Active Models</p>
+            <p class="text-blue-400 font-bold text-lg">5 Models</p>
+        </div>
+        <div class="glass p-6 rounded-xl text-center">
+            <p class="text-gray-400 text-xs uppercase">Last Update</p>
+            <p class="text-gray-300 font-bold text-lg">Just Now</p>
+        </div>
+    </div>
+
+    <div class="glass rounded-2xl p-8">
+        <h2 class="text-2xl font-bold mb-2">Update Dataset</h2>
+        <p class="text-gray-400 text-sm mb-6">Upload a new .csv file to retrain the model ensemble.</p>
+
+        <form method="POST" enctype="multipart/form-data" action="/admin" class="space-y-6">
+            <div class="border-2 border-dashed border-white/20 rounded-xl p-10 text-center hover:border-blue-500/50 transition cursor-pointer relative">
+                <input type="file" name="dataset" accept=".csv" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" required>
+                <div class="text-4xl mb-3">📤</div>
+                <p class="font-semibold">Click to browse or drop file here</p>
+                <p class="text-xs text-gray-500 mt-2">Supports .csv files only</p>
+            </div>
+
+            <div class="glass rounded-2xl p-6 gap-4 mb-10">
+                <h4 class="font-bold mb-3 flex items-center">
+                    ℹ️ Dataset Requirements
+                </h4>
+                <ul class="text-gray-300 space-y-2 text-sm">
+                    <li class="flex items-start">
+                        <span class="text-green-400 mr-2">✓</span>
+                        <span>Both CSV files with columns: <code class="bg-black/30 px-2 py-1 rounded">title</code>, <code class="bg-black/30 px-2 py-1 rounded">text</code>, <code class="bg-black/30 px-2 py-1 rounded">subject</code>, <code class="bg-black/30 px-2 py-1 rounded">date</code></span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-green-400 mr-2">✓</span>
+                        <span>True.csv = Real news articles </span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-green-400 mr-2">✓</span>
+                        <span>Fake.csv = Fake news articles </span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-green-400 mr-2">✓</span>
+                        <span>Minimum 1000 samples per file recommended</span>
+                    </li>
+                    
+                </ul>
+            </div>
+        
+
+            <button type="submit" class="w-full py-3 bg-gradient-to-r from-green-600 to-emerald-600 rounded-xl font-bold hover:opacity-90 transition">
+                Upload & Process
+            </button>
+        </form>
+
+        {% if message %}
+        <div class="mt-6 p-4 rounded-xl bg-white/10 text-center border border-white/10">
+            {{ message }}
+        </div>
+        {% endif %}
+    </div>
+
+   
+</div>
+
+</body>
+</html>

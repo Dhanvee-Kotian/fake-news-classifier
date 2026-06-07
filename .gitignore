@@ -1,0 +1,12 @@
+# Ignore python cache and checkpoints
+__pycache__/
+.ipynb_checkpoints/
+
+# Ignore large datasets
+*.csv
+datasets/
+uploads/
+
+# Ignore heavy ML model weights
+*.pkl
+best_model.txt
